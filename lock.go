@@ -9,14 +9,25 @@ const url = "http://192.168.5.176:9001/version"
 
 var lock sync.Mutex
 
+// TestWorkLock 全局锁
 func TestWorkLock() {
 	lock.Lock()
 	_, _ = http.Get(url)
 	lock.Unlock()
 }
 
+// TestWork 不加锁
 func TestWork() {
 	_, _ = http.Get(url)
+}
+
+// TestWorkPrivate 私有锁
+func TestWorkPrivate(k int) {
+	v := GetLock(k)
+
+	v.Lock()
+	_, _ = http.Get(url)
+	v.Unlock()
 }
 
 type Mutex struct {
@@ -47,12 +58,4 @@ func GetLock(key int) *Mutex {
 	}
 	MMapLock.Unlock()
 	return v
-}
-
-func TestWorkPrivate(k int) {
-	v := GetLock(k)
-
-	v.Lock()
-	_, _ = http.Get(url)
-	v.Unlock()
 }
