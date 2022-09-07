@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-const url = "http://127.0.0.1:9001/version"
+const url = "http://192.168.5.176:9001/version"
 
 var lock sync.Mutex
 
@@ -21,7 +21,7 @@ func TestWork() {
 
 type Mutex struct {
 	Key int
-	M sync.Mutex
+	M   sync.Mutex
 }
 
 func (m *Mutex) Lock() {
@@ -41,7 +41,7 @@ func GetLock(key int) *Mutex {
 	if !ok {
 		v = &Mutex{
 			Key: key,
-			M: sync.Mutex{},
+			M:   sync.Mutex{},
 		}
 		MMap[key] = v
 	}
